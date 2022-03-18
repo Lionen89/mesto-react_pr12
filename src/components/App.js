@@ -8,18 +8,24 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
+import { Route, Switch } from "react-router-dom";
+import Login from "./Login";
+import Register from "./Register";
+import ProtectedRoute from "./ProtectedRoute";
 // import ConfirmationPopup from "./ConfirmationPopup";
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] =
     React.useState(false);
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
+    React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   // const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({});
   const [isPopupImageOpen, setPopupImageOpen] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
+  const [loggedIn, setLoggedIn] = React.useState(true);
 
   React.useEffect(() => {
     Promise.all([apiReact.getProfileData(), apiReact.getInitialCards()])
@@ -80,20 +86,26 @@ function App() {
     // Снова проверяем, есть ли уже лайк на этой карточке
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
     // Отправляем запрос в API и получаем обновлённые данные карточки
-    apiReact.changeLikeCardStatus(card._id, isLiked)
-    .then((newCard) => {
-      setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
-    })
-    .catch((err) => console.log(`Ошибка: ${err.status}`));
+    apiReact
+      .changeLikeCardStatus(card._id, isLiked)
+      .then((newCard) => {
+        setCards((state) =>
+          state.map((c) => (c._id === card._id ? newCard : c))
+        );
+      })
+      .catch((err) => console.log(`Ошибка: ${err.status}`));
   }
 
   function handleCardDelete(card) {
     // let newCards = cards.filter((element) => element._id !== card._id);
-    apiReact.deleteCard(card._id)
-    .then(() => {
-      setCards(cards => cards.filter((element) => element._id !== card._id));
-    })
-    .catch((err) => console.log(`Ошибка: ${err.status}`));
+    apiReact
+      .deleteCard(card._id)
+      .then(() => {
+        setCards((cards) =>
+          cards.filter((element) => element._id !== card._id)
+        );
+      })
+      .catch((err) => console.log(`Ошибка: ${err.status}`));
   }
   function handleAddPlaceSubmit(newCard) {
     apiReact
@@ -106,53 +118,75 @@ function App() {
   }
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <div className="main-page">
-        <Header />
-        <div className="main-page__container">
-          <Main
-            onEditAvatar={handleEditAvatarClick}
-            onAddPlace={handleAddPlaceClick}
-            onEditProfile={handleEditProfileClick}
-            onCardClick={handleCardClick}
-            cards={cards}
-            onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
-            // onConfirmationfPopup = {handleTrashClick}
-          />
-          <Footer />
-        </div>
-        <EditAvatarPopup
-          isOpen={isEditAvatarPopupOpen}
-          onClose={closeAllPopups}
-          onUpdateAvatar={handleUpdateAvatar}
-        />
+    <Switch>
+      <Route path="/sign-up">
+        <Register />
+      </Route>
+      <Route path="/sign-in">
+        <Login />
+      </Route>
+      <CurrentUserContext.Provider value={currentUser}>
+      <ProtectedRoute
+        exact
+        path="/"
+        loggedIn={loggedIn}
+        component={Main}
+        onEditAvatar={handleEditAvatarClick}
+        onAddPlace={handleAddPlaceClick}
+        onEditProfile={handleEditProfileClick}
+        onCardClick={handleCardClick}
+        cards={cards}
+        onCardLike={handleCardLike}
+        onCardDelete={handleCardDelete}
+      >
+          <div className="main-page">
+            <Header />
+            <div className="main-page__container">
+              <Main
+                // onEditAvatar={handleEditAvatarClick}
+                // onAddPlace={handleAddPlaceClick}
+                // onEditProfile={handleEditProfileClick}
+                // onCardClick={handleCardClick}
+                // cards={cards}
+                // onCardLike={handleCardLike}
+                // onCardDelete={handleCardDelete}
+                // onConfirmationfPopup = {handleTrashClick}
+              />
+              <Footer />
+            </div>
+            <EditAvatarPopup
+              isOpen={isEditAvatarPopupOpen}
+              onClose={closeAllPopups}
+              onUpdateAvatar={handleUpdateAvatar}
+            />
 
-        <EditProfilePopup
-          isOpen={isEditProfilePopupOpen}
-          onClose={closeAllPopups}
-          onUpdateUser={handleUpdateUser}
-        />
+            <EditProfilePopup
+              isOpen={isEditProfilePopupOpen}
+              onClose={closeAllPopups}
+              onUpdateUser={handleUpdateUser}
+            />
 
-        <AddPlacePopup
-          isOpen={isAddPlacePopupOpen}
-          onClose={closeAllPopups}
-          onAddPlace={handleAddPlaceSubmit}
-        />
+            <AddPlacePopup
+              isOpen={isAddPlacePopupOpen}
+              onClose={closeAllPopups}
+              onAddPlace={handleAddPlaceSubmit}
+            />
 
-        <ImagePopup
-          card={selectedCard}
-          isOpen={isPopupImageOpen}
-          onClose={closeAllPopups}
-        ></ImagePopup>
+            <ImagePopup
+              card={selectedCard}
+              isOpen={isPopupImageOpen}
+              onClose={closeAllPopups}
+            />
 
-        {/* <ConfirmationPopup 
+            {/* <ConfirmationPopup 
   isOpen={isConfirmationPopupOpen}
   onClose={closeAllPopups}
   onCardDelete = {handleCardDelete}
    /> */}
-      </div>
-    </CurrentUserContext.Provider>
+          </div>
+      </ProtectedRoute>
+      </CurrentUserContext.Provider>
+    </Switch>
   );
 }
 

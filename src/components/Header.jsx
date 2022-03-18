@@ -1,9 +1,10 @@
 import logoMesto from "../images/Mesto_Russia.svg";
 
-function Header() {
+function Header(props) {
   return (
     <header className="header">
       <img src={logoMesto} alt="Лого Место" className="header__logo" />
+      <a href="/sing-up" className='header__link'>{props.headerLinkName}</a>
     </header>
   );
 }
