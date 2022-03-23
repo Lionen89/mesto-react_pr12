@@ -19,7 +19,6 @@ function Card(props) {
     props.onCardLike(props.card);
   }
   function handleDeleteClick() {
-    // props.onConfirmationfPopup
     props.onCardDelete(props.card);
   }
   return (
