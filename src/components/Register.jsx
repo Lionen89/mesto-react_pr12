@@ -1,5 +1,4 @@
 import React from "react";
-import apiAuth from "../utils/AuthApi";
 import { Link } from "react-router-dom";
 
 function Register(props) {
@@ -15,16 +14,7 @@ function Register(props) {
   
   function handleSubmit(e) {
     e.preventDefault();
-    apiAuth
-      .registerUser(password, email)
-      .then(() => {
-        props.setIsInfoTooltipOpen(true);
-        props.setIsRegistrationComplete(true);
-      })
-      .catch(() => {
-        props.setIsInfoTooltipOpen(true);
-        props.setIsRegistrationComplete(false);
-      });
+    props.hadleRegister(password, email)
   }
 
   return (

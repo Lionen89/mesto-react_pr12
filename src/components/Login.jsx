@@ -1,6 +1,5 @@
 import Header from "./Header";
 import React from "react";
-import apiAuth from "../utils/AuthApi";
 import { useHistory } from "react-router-dom";
 
 function Login(props) {
@@ -16,21 +15,7 @@ function Login(props) {
   }
   function handleSubmit(e) {
     e.preventDefault();
-    apiAuth
-      .loginUser(password, email)
-      .then((data) => {
-        if (data.token) {
-          localStorage.setItem("token", data.token);
-          props.loggedIn();
-          props.email(email);
-
-          history.push("/");
-        }
-      })
-      .catch(() => {
-        props.setIsInfoTooltipOpen(true);
-        props.setIsRegistrationComplete(false);
-      });
+    props.hadleLogin(password, email)
   }
 
   return (

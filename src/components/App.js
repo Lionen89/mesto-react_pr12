@@ -33,14 +33,26 @@ function App() {
   const history = useHistory();
 
   React.useEffect(() => {
+    if(loggedIn){
     Promise.all([apiReact.getProfileData(), apiReact.getInitialCards()])
       .then(([user, cards]) => {
         setCurrentUser(user);
         setCards(cards);
       })
       .catch((err) => console.log(`Ошибка: ${err.status}`));
-  }, []);
+  }}, [loggedIn]);
   React.useEffect(() => {
+    const tokenCheck = () => {
+      const jwt = localStorage.getItem("token");
+      if (jwt) {
+        apiAuth.checkToken(jwt).then((data) => {
+          handleLoggedIn();
+          handleEmail(data.data.email);
+          history.push("/");
+        })
+        .catch((err) => console.log(`Ошибка: ${err.status}`));
+      }
+    };
     tokenCheck();
   }, []);
 
@@ -133,22 +145,40 @@ function App() {
     setEmail(email);
   };
 
-  const tokenCheck = () => {
-    const jwt = localStorage.getItem("token");
-    if (jwt) {
-      apiAuth.checkToken(jwt).then((data) => {
-        handleLoggedIn();
-        handleEmail(data.data.email);
-        history.push("/");
-      });
-    }
-  };
-
-
   function signOut() {
     setLoggedIn(false);
     localStorage.removeItem("token");
     history.push("/sign-in");
+  }
+  const hadleLogin = (password, UserEmail) => {
+    apiAuth
+    .loginUser(password, UserEmail)
+    .then((data) => {
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+        handleLoggedIn();
+        handleEmail(UserEmail);
+
+        history.push("/");
+      }
+    })
+    .catch(() => {
+      setIsInfoTooltipOpen(true);
+      setIsRegistrationComplete(false);
+    });
+}
+
+  const hadleRegister = (password, UserEmail) => {
+    apiAuth
+      .registerUser(password, UserEmail)
+      .then(() => {
+        setIsInfoTooltipOpen(true);
+        setIsRegistrationComplete(true);
+      })
+      .catch(() => {
+        setIsInfoTooltipOpen(true);
+        setIsRegistrationComplete(false);
+      });
   }
 
   return (
@@ -161,14 +191,12 @@ function App() {
               <Register
                 setIsInfoTooltipOpen={setIsInfoTooltipOpen}
                 setIsRegistrationComplete={setIsRegistrationComplete}
+                hadleRegister={hadleRegister}
               />
             </Route>
             <Route path="/sign-in">
               <Login
-                setIsInfoTooltipOpen={setIsInfoTooltipOpen}
-                setIsRegistrationComplete={setIsRegistrationComplete}
-                loggedIn={handleLoggedIn}
-                email={handleEmail}
+                hadleLogin={hadleLogin}
               />
             </Route>
             <ProtectedRoute
