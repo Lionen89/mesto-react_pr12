@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.css": "/mesto-react_pr12/static/css/main.5d710898.css",
+    "main.js": "/mesto-react_pr12/static/js/main.773a11d1.js",
+    "static/media/Inter-Medium.woff": "/mesto-react_pr12/static/media/Inter-Medium.9053572c46aeb4b16caa.woff",
+    "static/media/Inter-Black.woff": "/mesto-react_pr12/static/media/Inter-Black.c6938660eec019fefd68.woff",
+    "static/media/Inter-Regular.woff": "/mesto-react_pr12/static/media/Inter-Regular.8c206db99195777c6769.woff",
+    "static/media/Inter-Medium.woff2": "/mesto-react_pr12/static/media/Inter-Medium.293fd13dbca5a3e450ef.woff2",
+    "static/media/Inter-Black.woff2": "/mesto-react_pr12/static/media/Inter-Black.15ca31c0a2a68f76d2d1.woff2",
+    "static/media/Inter-Regular.woff2": "/mesto-react_pr12/static/media/Inter-Regular.c8ba52b05a9ef10f4758.woff2",
+    "static/media/Mesto_Russia.svg": "/mesto-react_pr12/static/media/Mesto_Russia.e1792cd1bf55c68d1538deb5b248d425.svg",
+    "static/media/heart.svg": "/mesto-react_pr12/static/media/heart.87ed371465c7a6a1cd01.svg",
+    "index.html": "/mesto-react_pr12/index.html",
+    "static/media/Union(1).svg": "/mesto-react_pr12/static/media/Union(1).df8eddf661ff88f2d0efd3d570d14309.svg",
+    "static/media/Trash.svg": "/mesto-react_pr12/static/media/Trash.823b0cf1b0b7e9cb7cad.svg",
+    "static/media/Union.svg": "/mesto-react_pr12/static/media/Union.1b6082f862eac35e2514460237d96ecc.svg",
+    "static/media/heart_active.svg": "/mesto-react_pr12/static/media/heart_active.e787eeb70bb65b7b453a.svg",
+    "static/media/pen.svg": "/mesto-react_pr12/static/media/pen.8667ac4a523e8fc42e59.svg",
+    "static/media/BigPen.svg": "/mesto-react_pr12/static/media/BigPen.a086f758840ae814ecde.svg",
+    "static/media/Close_Icon.svg": "/mesto-react_pr12/static/media/Close_Icon.2ceb783afbab75916ddc.svg",
+    "static/media/plus.svg": "/mesto-react_pr12/static/media/plus.d86bb2edc2f6eadb96b7.svg",
+    "main.5d710898.css.map": "/mesto-react_pr12/static/css/main.5d710898.css.map",
+    "main.773a11d1.js.map": "/mesto-react_pr12/static/js/main.773a11d1.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5d710898.css",
+    "static/js/main.773a11d1.js"
+  ]
+}
